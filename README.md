@@ -77,7 +77,11 @@ Integrate this package into the following packages:
 * [ ] `ongoworks:security`
 * [ ] `sewdn:collection-behaviours`
 
-If you are interested in using this package in your package, let me know and I will add it to this list.
+Create tests.
+
+## Contributing
+
+If you are interested in using this package in your package, let me know and I will add it to the Todo list.
 
 ## License
 
