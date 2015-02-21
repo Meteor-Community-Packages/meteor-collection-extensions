@@ -72,16 +72,16 @@ Meteor.addCollectionPrototype('helpers', function (helpers) {
 
 Integrate this package into the following packages:
 
-* [ ] `matb33:collection-hooks`
-* [ ] `dburles:collection-instances`
-* [ ] `ongoworks:security`
-* [ ] `sewdn:collection-behaviours`
+* [ ] [`matb33:collection-hooks`](https://github.com/matb33/meteor-collection-hooks/)
+* [ ] [`dburles:collection-instances`](https://github.com/dburles/mongo-collection-instances)
+* [ ] [`ongoworks:security`](https://github.com/ongoworks/meteor-security)
+* [ ] [`sewdn:collection-behaviours`](https://github.com/Sewdn/meteor-collection-behaviours/)
 
 Create tests.
 
 ## Contributing
 
-If you are interested in using this package in your package, let me know and I will add it to the Todo list.
+If you are interested in using this package in your package, or if you want me to test integrating this into your package let me know and I will add it to the Todo list.
 
 ## License
 
