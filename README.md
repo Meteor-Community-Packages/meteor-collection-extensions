@@ -81,7 +81,7 @@ Create tests.
 
 ## Contributing
 
-If you are interested in using this package in your package, or if you want me to test integrating this into your package let me know and I will add it to the Todo list.
+If you are interested in using this package in your package, or if you want me to test (or if YOU want to test it yourself) integrating this into your package let me know and I will add it to the Todo list.
 
 ## Future
 
