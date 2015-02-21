@@ -70,7 +70,7 @@ Meteor.addCollectionPrototype('helpers', function (helpers) {
 
 ## Todo
 
-Integrate this package into the following packages:
+Integrate this package into the following packages and test them:
 
 * [ ] [`matb33:collection-hooks`](https://github.com/matb33/meteor-collection-hooks/)
 * [ ] [`dburles:collection-instances`](https://github.com/dburles/mongo-collection-instances)
