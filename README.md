@@ -24,7 +24,7 @@ I am hoping for all collection-extending package authors to to use this to end t
 
 #### Meteor.addCollectionExtension(fn)
 
-Pass in a function that takes 1 required argument and an optional second that holds the `Mongo.Collection` instantiation arguments.
+Pass in a function that takes 1 required argument and an optional second that holds the `Mongo.Collection` instantiation arguments. __Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work.
 
 #### Meteor.addCollectionPrototype(name, fn)
 
