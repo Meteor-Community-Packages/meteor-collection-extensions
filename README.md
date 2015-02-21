@@ -5,7 +5,7 @@ easiest and coolest way. If you want to create a package that extends `Mongo.Col
 
 __This is currently alpha!__
 
-## Installation (not published yet)
+## Installation
 
 ```
 meteor add lai:collection-extensions
