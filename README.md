@@ -83,6 +83,10 @@ Create tests.
 
 If you are interested in using this package in your package, or if you want me to test integrating this into your package let me know and I will add it to the Todo list.
 
+## Future
+
+Add control over the execution order of each collection extension somehow.
+
 ## License
 
 MIT
