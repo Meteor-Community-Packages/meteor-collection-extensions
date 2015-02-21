@@ -10,10 +10,14 @@ Meteor.addCollectionExtension = function (customFunction) {
   if (typeof customFunction !== 'function') {
     throw new Meteor.Error(
       'collection-extension-wrong-argument', 
-      'You must pass a function that takes 1 (or optionally 2) \
+      'You must pass a function that takes 1 \
        into Meteor.addCollectionExtension().');
   }
   CollectionExtensions._extensions.push(customFunction);
+  // If Meteor.users exists, apply the extension right away
+  if (typeof Meteor.users !== 'undefined') {
+    customFunction(Meteor.users);
+  }
 };
 
 // Utility function to add a prototype function to your
@@ -97,10 +101,7 @@ if (typeof Mongo !== 'undefined') {
   CollectionExtensions._wrapCollection(Meteor, Meteor);
 }
 
-if (Meteor.users) {
-  // If Meteor.users has been instantiated, attempt to re-assign its prototype:
+if (typeof Meteor.users !== 'undefined') {
+  // Ensures that Meteor.users instanceof Mongo.Collection
   CollectionExtensions._reassignCollectionPrototype(Meteor.users);
-
-  // Next, process collection extensions
-  CollectionExtensions._processCollectionExtensions(Meteor.users);
 }
