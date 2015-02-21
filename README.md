@@ -3,6 +3,8 @@
 This package gives you utility functions to extend your `Mongo.Collection` instances in (hopefully) the safest, 
 easiest and coolest way. If you want to create a package that extends `Mongo.Collection`, you'll need this package. I am striving for this package to be a third-party official way of extending `Mongo.Collection` until, well, Meteor decides to create a core functionality to extend it.
 
+__This is currently alpha!__
+
 ## Installation (not published yet)
 
 ```
