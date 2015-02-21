@@ -80,10 +80,12 @@ CollectionExtensions._wrapCollection = function (ns, as) {
   }
 };
 
-CollectionExtensions._processCollectionExtensions = function (self, arguments) {
+CollectionExtensions._processCollectionExtensions = function (self, args) {
   // Using old-school operations for better performance
   // Please don't judge me ;P
-  var args = [].slice.call(arguments, 0);
+  if (args) {
+    args = [].slice.call(args, 0);
+  }
   var extensions = CollectionExtensions._extensions;
   for (var i = 0, len = extensions.length; i < len; i++) {
     extensions[i](self, args);
