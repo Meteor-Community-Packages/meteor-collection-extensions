@@ -22,11 +22,11 @@ I am hoping for all collection-extending package authors to to use this to end t
 
 ## API
 
-#### Meteor.addCollectionExtension(fn)
+#### Meteor.addCollectionExtension(fn (instance [, instantiationArguments]) {})
 
-Pass in a function that takes 1 required argument and an optional second that holds the `Mongo.Collection` instantiation arguments. __Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work.
+Pass in a function that takes 1 required argument and an optional second that holds the `Mongo.Collection` instantiation arguments.__Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work.
 
-#### Meteor.addCollectionPrototype(name, fn)
+#### Meteor.addCollectionPrototype(name, fn (...) {})
 
 Pass in the name of the prototype function as well as the function. Yes, I know you can simply just do `Mongo.Collection.prototype.myPrototypeFunction = function (...) {}`, which is fine. One of the things that this function does differently is to check whether you're in an older version of Meteor, in which `Mongo.Collection` doesn't exist but rather `Meteor.Collection` does.
 
