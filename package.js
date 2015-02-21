@@ -1,6 +1,6 @@
 Package.describe({
   name: 'lai:collection-extensions',
-  version: '0.0.1',
+  version: '0.0.5',
   // Brief, one-line summary of the package.
   summary: 'Safely and easily extend the Mongo.Collection constructor with custom functionality.',
   // URL to the Git repository containing the source code for this package.
@@ -13,15 +13,15 @@ Package.describe({
 Package.onUse = Package.onUse || Package.on_use;    // backwards-compat
 Package.onTest = Package.onTest || Package.on_test; // backwards-compat
 
-Package.onUse(function(api) {
+Package.onUse(function (api) {
   api.addFiles = api.addFiles || api.add_files;     // backwards-compat
   
   if (api.versionsFrom) { // 0.9.0+ litmus test
     api.versionsFrom('0.9.0.1');
 
     api.use([
-      'mongo',
-      'tracker'
+      'mongo@1.0.11',
+      'tracker@1.0.5'
     ]);
   } else {
     api.use([
@@ -41,7 +41,7 @@ Package.onUse(function(api) {
 });
 
 /*
-Package.onTest(function(api) {
+Package.onTest(function (api) {
   api.use('tinytest');
   api.use('lai:mongo-constructor-wrapper');
   api.addFiles('lai:mongo-constructor-wrapper-tests.js');
