@@ -37,7 +37,9 @@ Package.onUse(function (api) {
 
   api.use(['accounts-base'], ['client', 'server'], { weak: true });
   
-  api.addFiles('collection-extensions.js');
+  api.addFiles([
+    'collection-extensions.js'
+  ]);
 });
 
 /*
