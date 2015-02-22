@@ -91,6 +91,7 @@ Feedback is welcome.
 ## Future
 
 Add control over the execution order of each collection extension somehow.
+Track collection instances that were prematurely instantiated and apply extensions on demand.
 
 ## License
 
