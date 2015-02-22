@@ -18,7 +18,7 @@ Meteor gives you no easy way to extend the `Mongo.Collection` object, and theref
 package publishers who want to extend its functionality resort 
 to monkey-patching the `Mongo.Collection` constructor, and sometimes it's not done right. This package seeks to centralize one well-done monkey-patch with the ability to hook into the constructor as many times as possible. See my code.
 
-I am hoping for all collection-extending package authors to to use this to end the package compatibility issues. In order for this to happen, I will fork major packages like `matb33:collection-hooks`, `ongoworks:security`, `dburles:collection-instances`,
+I am hoping for all collection-extending package authors to to use this to end the package compatibility issues. In order for this to happen, I will fork major packages like `matb33:collection-hooks`, `ongoworks:security`, `dburles:mongo-collection-instances`,
  refactor the code to use this utility package, and run their test suites. If you want to help, that would be awesome.
 
 ## API
@@ -33,7 +33,7 @@ Pass in the name of the prototype function as well as the function. Yes, I know 
 
 ## Usage
 
-The following code recreates [this section of code](https://github.com/dburles/mongo-collection-instances/blob/master/mongo-instances.js#L4-L12) of the `dburles:collection-instances` using `Meteor.addCollectionExtension(fn)` thereby eliminating the need to monkey-patch the `Mongo.Collection` constructor:
+The following code recreates [this section of code](https://github.com/dburles/mongo-collection-instances/blob/master/mongo-instances.js#L4-L12) of the `dburles:mongo-collection-instances` using `Meteor.addCollectionExtension(fn)` thereby eliminating the need to monkey-patch the `Mongo.Collection` constructor:
 
 ```js
 var instances = [];
@@ -76,7 +76,7 @@ Meteor.addCollectionPrototype('helpers', function (helpers) {
 Integrate this package into the following packages and test them:
 
 * [ ] [`matb33:collection-hooks`](https://github.com/matb33/meteor-collection-hooks/)
-* [ ] [`dburles:collection-instances`](https://github.com/dburles/mongo-collection-instances)
+* [ ] [`dburles:mongo-collection-instances`](https://github.com/dburles/mongo-collection-instances)
 * [ ] [`ongoworks:security`](https://github.com/ongoworks/meteor-security)
 * [ ] [`sewdn:collection-behaviours`](https://github.com/Sewdn/meteor-collection-behaviours/)
 
