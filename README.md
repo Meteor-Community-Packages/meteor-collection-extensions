@@ -1,9 +1,9 @@
 ## Meteor Collection Extensions
 
 This package gives you utility functions to extend your `Mongo.Collection` instances in (hopefully) the safest, 
-easiest and coolest way. If you want to create a package that extends `Mongo.Collection`, you'll need this package. I am striving for this package to be a third-party official way of extending `Mongo.Collection` until, well, Meteor decides to create a core functionality to extend it.
+easiest and coolest way. If you want to create a package that monkey-patches the `Mongo.Collection` constructor, you'll need this package. I am striving for this package to be a third-party official way of monkey-patching `Mongo.Collection` until, well, Meteor decides to create a core functionality to properly extend it.
 
-__This is currently alpha!__
+__This is currently beta!__
 And I need your help. A [Hackpad](https://hackpad.com/rdqGCTPoZ8F) discussion would be very welcome.
 
 ## Installation
@@ -18,14 +18,14 @@ Meteor gives you no easy way to extend the `Mongo.Collection` object, and theref
 package publishers who want to extend its functionality resort 
 to monkey-patching the `Mongo.Collection` constructor, and sometimes it's not done right. This package seeks to centralize one well-done monkey-patch with the ability to hook into the constructor as many times as possible. See my code.
 
-I am hoping for all collection-extending package authors to to use this to end the package compatibility issues. In order for this to happen, I will fork major packages like `matb33:collection-hooks`, `ongoworks:security`, `dburles:mongo-collection-instances`,
+I am hoping for all collection-extending package authors to to use this to end the package compatibility issues. In order for this to happen, I will fork major packages like `matb33:collection-hooks`, `sewdn:collection-behaviours`, `dburles:mongo-collection-instances`,
  refactor the code to use this utility package, and run their test suites. If you want to help, that would be awesome.
 
 ## API
 
-#### Meteor.addCollectionExtension(fn (instance [, instantiationArguments]) {})
+#### Meteor.addCollectionExtension(fn ([name, options]) {})
 
-Pass in a function that takes 1 required argument and an optional second that holds the `Mongo.Collection` instantiation arguments.__Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work.
+Pass in a function where the arguments are the same as that of when instantiating `Mongo.Collection`.__Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work. Most likely you will only use this when buildign a custom package.
 
 #### Meteor.addCollectionPrototype(name, fn (...) {})
 
@@ -38,11 +38,11 @@ The following code recreates [this section of code](https://github.com/dburles/m
 ```js
 var instances = [];
 
-Meteor.addCollectionExtension(function (inst, args) {
+Meteor.addCollectionExtension(function (name, options) {
   instances.push({
-    name: inst._name,
+    name: _name,
     instance: inst,
-    options: args[1]
+    options: options
   });
 });
 ```
@@ -75,10 +75,9 @@ Meteor.addCollectionPrototype('helpers', function (helpers) {
 
 Integrate this package into the following packages and test them:
 
-* [ ] [`matb33:collection-hooks`](https://github.com/matb33/meteor-collection-hooks/)
-* [ ] [`dburles:mongo-collection-instances`](https://github.com/dburles/mongo-collection-instances)
-* [ ] [`ongoworks:security`](https://github.com/ongoworks/meteor-security)
-* [ ] [`sewdn:collection-behaviours`](https://github.com/Sewdn/meteor-collection-behaviours/)
+* [x] [`matb33:collection-hooks`](https://github.com/matb33/meteor-collection-hooks/) ([Refactored and tested with 100% success](https://github.com/rclai/meteor-collection-hooks/tree/collection-extensions))
+* [x] [`dburles:mongo-collection-instances`](https://github.com/dburles/mongo-collection-instances) ([Refactored and tested with 100% success](https://github.com/rclai/mongo-collection-instances/tree/collection-extensions))
+* [ ] [`sewdn:collection-behaviours`](https://github.com/Sewdn/meteor-collection-behaviours/) (He didn't write tests but [here's the forked refactor](https://github.com/rclai/meteor-collection-behaviours/tree/collection-extensions) anyway in case you wanted to test)
 
 Create tests.
 
