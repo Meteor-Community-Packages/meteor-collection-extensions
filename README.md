@@ -24,7 +24,7 @@ I am hoping for all collection-extending package authors to to use this to end t
 
 #### Meteor.addCollectionExtension(fn ([name, options]) {})
 
-Pass in a function where the arguments are the same as that of when instantiating `Mongo.Collection`. In addition, you may access the collection instance by using `this`. __Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work. Most likely you will only use this when buildign a custom package.
+Pass in a function where the arguments are the same as that of when instantiating `Mongo.Collection`. In addition, you may access the collection instance by using `this`. __Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work. Most likely you will only use this when building a custom package.
 
 #### Meteor.addCollectionPrototype(name, fn (...) {})
 
