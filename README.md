@@ -32,7 +32,7 @@ Pass in the name of the prototype function as well as the function. Yes, I know 
 
 ## Usage
 
-The following code recreates [this section of code](https://github.com/dburles/mongo-collection-instances/blob/master/mongo-instances.js#L4-L12) of the `dburles:mongo-collection-instances` using `Meteor.addCollectionExtension(fn)` thereby eliminating the need to monkey-patch the `Mongo.Collection` constructor:
+The following code recreates [this section of code](https://github.com/dburles/mongo-collection-instances/blob/master/mongo-instances.js#L2-L17) of the `dburles:mongo-collection-instances` using `Meteor.addCollectionExtension(fn)` thereby eliminating the need to monkey-patch the `Mongo.Collection` constructor:
 
 ```js
 var instances = [];
