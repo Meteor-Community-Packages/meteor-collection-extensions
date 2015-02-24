@@ -3,8 +3,7 @@
 This package gives you utility functions to extend your `Mongo.Collection` instances in (hopefully) the safest, 
 easiest and coolest way. If you want to create a package that monkey-patches the `Mongo.Collection` constructor, you'll need this package. I am striving for this package to be a third-party official way of monkey-patching `Mongo.Collection` until, well, Meteor decides to create a core functionality to properly extend it.
 
-__This is currently beta!__
-And I need your help. A [Hackpad](https://hackpad.com/rdqGCTPoZ8F) discussion would be very welcome.
+If you'd like to contribute check out the [Hackpad](https://hackpad.com/rdqGCTPoZ8F) discussion.
 
 ## Installation
 
