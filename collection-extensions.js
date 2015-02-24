@@ -61,11 +61,10 @@ CollectionExtensions._reassignCollectionPrototype = function (instance, constr) 
 // This code is the same monkey-patching code 
 // that matb33:collection-hooks uses, which works pretty nicely
 CollectionExtensions._wrapCollection = function (ns, as) {
-  // Save the original constructor
-  if (!as._CollectionConstructor) as._CollectionConstructor = as.Collection;
+  // Save the original prototype
   if (!as._CollectionPrototype) as._CollectionPrototype = new as.Collection(null);
 
-  var constructor = as._CollectionConstructor;
+  var constructor = as.Collection;
   var proto = as._CollectionPrototype;
 
   ns.Collection = function () {
@@ -90,7 +89,7 @@ CollectionExtensions._processCollectionExtensions = function (self, args) {
   var args = args ? [].slice.call(args, 0) : undefined;
   var extensions = CollectionExtensions._extensions;
   for (var i = 0, len = extensions.length; i < len; i++) {
-    extensions[i](self, args);
+    extensions[i].apply(self, args);
   }
 };
 
