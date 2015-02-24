@@ -41,10 +41,24 @@ Package.onUse(function (api) {
   ]);
 });
 
-/*
-Package.onTest(function (api) {
-  api.use('tinytest');
-  api.use('lai:mongo-constructor-wrapper');
-  api.addFiles('lai:mongo-constructor-wrapper-tests.js');
+Package.onTest(function(api) {
+  api.use([
+    'accounts-base',
+    'tinytest',
+    'tracker',
+    'mongo',
+    'underscore',
+    'matb33:collection-hooks@0.7.9',
+    'aldeed:collection2@2.3.2',
+    'ongoworks:security@1.0.1',
+    'cfs:standard-packages@0.5.3',
+    'dburles:mongo-collection-instances@0.3.1',
+    'lai:document-methods@0.1.4',
+    'cfs:gridfs@0.0.27'
+  ]);
+  api.use('lai:document-methods');
+  api.addFiles([
+    'tests/functions.js',
+    'tests/tests.js'
+  ]);
 });
-*/
