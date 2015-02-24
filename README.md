@@ -39,7 +39,7 @@ var instances = [];
 
 Meteor.addCollectionExtension(function (name, options) {
   instances.push({
-    name: _name,
+    name: name,
     instance: inst,
     options: options
   });
