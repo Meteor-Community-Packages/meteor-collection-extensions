@@ -16,7 +16,7 @@ Meteor.addCollectionExtension = function (customFunction) {
   CollectionExtensions._extensions.push(customFunction);
   // If Meteor.users exists, apply the extension right away
   if (typeof Meteor.users !== 'undefined') {
-    customFunction.apply(Meteor.users);
+    customFunction.apply(Meteor.users, ['users']);
   }
 };
 
