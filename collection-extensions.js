@@ -10,7 +10,7 @@ Meteor.addCollectionExtension = function (customFunction) {
   if (typeof customFunction !== 'function') {
     throw new Meteor.Error(
       'collection-extension-wrong-argument', 
-      'You must pass a function that takes 1 \
+      'You must pass a function \
        into Meteor.addCollectionExtension().');
   }
   CollectionExtensions._extensions.push(customFunction);
@@ -33,7 +33,7 @@ Meteor.addCollectionPrototype = function (name, customFunction) {
     throw new Meteor.Error(
       'collection-extension-wrong-argument', 
       'You must pass a function as the second argument \
-       (that takes 2 arguments) into Meteor.addCollectionPrototype().');
+       into Meteor.addCollectionPrototype().');
   }
   (typeof Mongo !== 'undefined' ? 
     Mongo.Collection : 
