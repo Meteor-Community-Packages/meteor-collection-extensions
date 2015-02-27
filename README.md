@@ -75,7 +75,7 @@ Meteor.addCollectionPrototype('helpers', function (helpers) {
 Integrate this package into the following packages and test them:
 
 * [x] [`matb33:collection-hooks`](https://github.com/matb33/meteor-collection-hooks/) ([Refactored and tested with 100% success](https://github.com/rclai/meteor-collection-hooks/tree/collection-extensions))
-* [x] [`dburles:mongo-collection-instances`](https://github.com/dburles/mongo-collection-instances) ([Refactored and tested with 100% success](https://github.com/rclai/mongo-collection-instances/tree/collection-extensions))
+* [x] [`dburles:mongo-collection-instances`](https://github.com/dburles/mongo-collection-instances) ([Refactored and tested with 100% success](https://github.com/rclai/mongo-collection-instances/tree/collection-extensions)) ([Now merged into master!](https://github.com/dburles/mongo-collection-instances/commit/7f90911b6a7117cfc62e40b200a0437ea9fb5961))
 * [ ] [`sewdn:collection-behaviours`](https://github.com/Sewdn/meteor-collection-behaviours/) (He didn't write tests but [here's the forked refactor](https://github.com/rclai/meteor-collection-behaviours/tree/collection-extensions) anyway in case you wanted to test)
 
 Create tests.
