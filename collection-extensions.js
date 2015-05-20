@@ -44,16 +44,12 @@ Meteor.addCollectionPrototype = function (name, customFunction) {
 // and unstoppably already instantiated Mongo instances
 // i.e. Meteor.users
 CollectionExtensions._reassignCollectionPrototype = function (instance, constr) {
-  var hasSetPrototypeOf = typeof Object.setPrototypeOf === 'function';
-
   if (!constr) constr = typeof Mongo !== 'undefined' ? Mongo.Collection : Meteor.Collection;
-
+  
   // __proto__ is not available in < IE11
   // Note: Assigning a prototype dynamically has performance implications
-  if (hasSetPrototypeOf) {
-    Object.setPrototypeOf(instance, constr.prototype);
-  } else if (instance.__proto__) {
-    instance.__proto__ = constr.prototype;
+  for (var prop in constr.prototype) {
+    instance.constructor.prototype[prop] = constr.prototype[prop];
   }
 };
 
