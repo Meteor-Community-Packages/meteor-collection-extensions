@@ -17,8 +17,7 @@ Meteor gives you no easy way to extend the `Mongo.Collection` object, and theref
 package publishers who want to extend its functionality resort 
 to monkey-patching the `Mongo.Collection` constructor, and sometimes it's not done right. This package seeks to centralize one well-done monkey-patch with the ability to hook into the constructor as many times as possible. See my code.
 
-I am hoping for all collection-extending package authors to to use this to end the package compatibility issues. In order for this to happen, I will fork major packages like `matb33:collection-hooks`, `sewdn:collection-behaviours`, `dburles:mongo-collection-instances`,
- refactor the code to use this utility package, and run their test suites. If you want to help, that would be awesome.
+I am hoping for all collection-extending package authors to to use this to end the package compatibility issues. In order for this to happen, I will fork major packages like `matb33:collection-hooks`, `sewdn:collection-behaviours` and refactor the code to use this utility package, and run their test suites. If you want to help, that would be awesome.
 
 ## API
 
