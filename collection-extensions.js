@@ -75,6 +75,7 @@ CollectionExtensions._wrapCollection = function (ns, as) {
   };
 
   ns.Collection.prototype = proto;
+  ns.Collection.prototype.constructor = ns.Collection;
 
   for (var prop in constructor) {
     if (constructor.hasOwnProperty(prop)) {
