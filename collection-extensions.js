@@ -9,7 +9,7 @@ CollectionExtensions._extensions = [];
 Meteor.addCollectionExtension = function (customFunction) {
   if (typeof customFunction !== 'function') {
     throw new Meteor.Error(
-      'collection-extension-wrong-argument', 
+      'collection-extension-wrong-argument',
       'You must pass a function \
        into Meteor.addCollectionExtension().');
   }
@@ -25,22 +25,22 @@ Meteor.addCollectionExtension = function (customFunction) {
 Meteor.addCollectionPrototype = function (name, customFunction) {
   if (typeof name !== 'string') {
     throw new Meteor.Error(
-      'collection-extension-wrong-argument', 
+      'collection-extension-wrong-argument',
       'You must pass a string as the first argument \
        into Meteor.addCollectionPrototype().');
   }
   if (typeof customFunction !== 'function') {
     throw new Meteor.Error(
-      'collection-extension-wrong-argument', 
+      'collection-extension-wrong-argument',
       'You must pass a function as the second argument \
        into Meteor.addCollectionPrototype().');
   }
-  (typeof Mongo !== 'undefined' ? 
-    Mongo.Collection : 
+  (typeof Mongo !== 'undefined' ?
+    Mongo.Collection :
     Meteor.Collection).prototype[name] = customFunction;
 };
 
-// This is used to reassign the prototype of unfortunately 
+// This is used to reassign the prototype of unfortunately
 // and unstoppably already instantiated Mongo instances
 // i.e. Meteor.users
 CollectionExtensions._reassignCollectionPrototype = function (instance, constr) {
@@ -58,7 +58,7 @@ CollectionExtensions._reassignCollectionPrototype = function (instance, constr) 
 };
 
 // This monkey-patches the Collection constructor
-// This code is the same monkey-patching code 
+// This code is the same monkey-patching code
 // that matb33:collection-hooks uses, which works pretty nicely
 CollectionExtensions._wrapCollection = function (ns, as) {
   // Save the original prototype
@@ -75,6 +75,7 @@ CollectionExtensions._wrapCollection = function (ns, as) {
   };
 
   ns.Collection.prototype = proto;
+  ns.Collection.prototype.constructor = ns.Collection;
 
   for (var prop in constructor) {
     if (constructor.hasOwnProperty(prop)) {
