@@ -118,3 +118,9 @@ Tinytest.add('instanceof - Meteor.users matches (Mongo/Meteor).Collection', func
   test.instanceOf(Meteor.users, Mongo.Collection);
   test.instanceOf(Meteor.users, Meteor.Collection);
 });
+
+Tinytest.add('instanceof - Mongo.Collection === Mongo.Collection.prototype.constructor', function (test) {
+  test.equal(Mongo.Collection, Mongo.Collection.prototype.constructor);
+  test.equal(Meteor.Collection, Mongo.Collection.prototype.constructor);
+  test.equal(Meteor.Collection, Meteor.Collection.prototype.constructor);
+});
