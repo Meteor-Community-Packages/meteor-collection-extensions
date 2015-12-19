@@ -6,7 +6,7 @@ CollectionExtensions._extensions = [];
 
 // This is where you would add custom functionality to
 // Mongo.Collection/Meteor.Collection
-Meteor.addCollectionExtension = function (customFunction) {
+CollectionExtensions.addCollectionExtension = function(customFunction) {
   if (typeof customFunction !== 'function') {
     throw new Meteor.Error(
       'collection-extension-wrong-argument', 
@@ -20,9 +20,15 @@ Meteor.addCollectionExtension = function (customFunction) {
   }
 };
 
+// Backwards compatibility
+Meteor.addCollectionExtension = function() {
+  console.warn('`Meteor.addCollectionExtension` is deprecated, please use `CollectionExtensions.addCollectionExtension`');
+  CollectionExtensions.addCollectionExtension.apply(null, arguments);
+};
+
 // Utility function to add a prototype function to your
 // Meteor/Mongo.Collection object
-Meteor.addCollectionPrototype = function (name, customFunction) {
+CollectionExtensions.addCollectionPrototype = function(name, customFunction) {
   if (typeof name !== 'string') {
     throw new Meteor.Error(
       'collection-extension-wrong-argument', 
@@ -40,10 +46,16 @@ Meteor.addCollectionPrototype = function (name, customFunction) {
     Meteor.Collection).prototype[name] = customFunction;
 };
 
+// Backwards compatibility
+Meteor.addCollectionExtension = function() {
+  console.warn('`Meteor.addCollectionExtension` is deprecated, please use `CollectionExtensions.addCollectionExtension`');
+  CollectionExtensions.addCollectionExtension.apply(null, arguments);
+};
+
 // This is used to reassign the prototype of unfortunately 
 // and unstoppably already instantiated Mongo instances
 // i.e. Meteor.users
-CollectionExtensions._reassignCollectionPrototype = function (instance, constr) {
+function reassignCollectionPrototype(instance, constr) {
   var hasSetPrototypeOf = typeof Object.setPrototypeOf === 'function';
 
   if (!constr) constr = typeof Mongo !== 'undefined' ? Mongo.Collection : Meteor.Collection;
@@ -60,7 +72,7 @@ CollectionExtensions._reassignCollectionPrototype = function (instance, constr) 
 // This monkey-patches the Collection constructor
 // This code is the same monkey-patching code 
 // that matb33:collection-hooks uses, which works pretty nicely
-CollectionExtensions._wrapCollection = function (ns, as) {
+function wrapCollection(ns, as) {
   // Save the original prototype
   if (!as._CollectionPrototype) as._CollectionPrototype = new as.Collection(null);
 
@@ -70,7 +82,7 @@ CollectionExtensions._wrapCollection = function (ns, as) {
   ns.Collection = function () {
     var ret = constructor.apply(this, arguments);
     // This is where all the collection extensions get processed
-    CollectionExtensions._processCollectionExtensions(this, arguments);
+    processCollectionExtensions(this, arguments);
     return ret;
   };
 
@@ -84,7 +96,7 @@ CollectionExtensions._wrapCollection = function (ns, as) {
   }
 };
 
-CollectionExtensions._processCollectionExtensions = function (self, args) {
+function processCollectionExtensions(self, args) {
   // Using old-school operations for better performance
   // Please don't judge me ;P
   var args = args ? [].slice.call(args, 0) : undefined;
@@ -95,13 +107,13 @@ CollectionExtensions._processCollectionExtensions = function (self, args) {
 };
 
 if (typeof Mongo !== 'undefined') {
-  CollectionExtensions._wrapCollection(Meteor, Mongo);
-  CollectionExtensions._wrapCollection(Mongo, Mongo);
+  wrapCollection(Meteor, Mongo);
+  wrapCollection(Mongo, Mongo);
 } else {
-  CollectionExtensions._wrapCollection(Meteor, Meteor);
+  wrapCollection(Meteor, Meteor);
 }
 
 if (typeof Meteor.users !== 'undefined') {
   // Ensures that Meteor.users instanceof Mongo.Collection
-  CollectionExtensions._reassignCollectionPrototype(Meteor.users);
+  reassignCollectionPrototype(Meteor.users);
 }
