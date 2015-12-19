@@ -48,7 +48,7 @@ CollectionExtensions.addPrototype = function(name, customFunction) {
 
 // Backwards compatibility
 Meteor.addCollectionPrototype = function() {
-  console.warn('`Meteor.addCollectionExtension` is deprecated, please use `CollectionExtensions.addPrototype`');
+  console.warn('`Meteor.addCollectionPrototype` is deprecated, please use `CollectionExtensions.addPrototype`');
   CollectionExtensions.addPrototype.apply(null, arguments);
 };
 
