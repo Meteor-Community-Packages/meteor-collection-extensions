@@ -20,3 +20,11 @@ insert = function (collection) {
 inst = function (collection) {
   return collection.findOne();
 };
+
+clearExtension = function(extension) {
+  var extensions = CollectionExtensions._extensions;
+  var indexOfExtension = extensions.indexOf(extension);
+  if (indexOfExtension > -1) {
+    extensions.splice(indexOfExtension, 1);
+  }
+};

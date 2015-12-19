@@ -57,7 +57,8 @@ Package.onTest(function(api) {
     'dburles:mongo-collection-instances@0.3.1',
     'lai:document-methods@0.1.4',
     'cfs:gridfs@0.0.27',
-    'coffeescript'
+    'coffeescript',
+    'lai:collection-extensions@0.1.4'
   ]);
   api.use('lai:document-methods');
   api.addFiles([
