@@ -1,6 +1,8 @@
+var VERSION_NUMBER = '0.2.1_1';
+
 Package.describe({
   name: 'lai:collection-extensions',
-  version: '0.2.1',
+  version: VERSION_NUMBER,
   // Brief, one-line summary of the package.
   summary: 'Safely and easily extend the Mongo.Collection constructor with custom functionality.',
   // URL to the Git repository containing the source code for this package.
@@ -58,7 +60,7 @@ Package.onTest(function(api) {
     'lai:document-methods@0.1.4',
     'cfs:gridfs@0.0.27',
     'coffeescript',
-    'lai:collection-extensions@0.2.0'
+    'lai:collection-extensions@' + VERSION_NUMBER
   ]);
   api.use('lai:document-methods');
   api.addFiles([
