@@ -39,6 +39,8 @@ Package.onUse(function (api) {
   api.addFiles([
     'collection-extensions.js'
   ]);
+
+  api.export('CollectionExtensions');
 });
 
 Package.onTest(function(api) {
