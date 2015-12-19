@@ -130,7 +130,7 @@ Tinytest.add('functionality - Add a collection extension', function(test) {
   var extension = function() {
     arr.push(1);
   };
-  CollectionExtensions.addCollectionExtension(extension);
+  CollectionExtensions.addExtension(extension);
   new Mongo.Collection(null);
   test.equal(arr[0], 1);
   clearExtension(extension);
@@ -144,7 +144,7 @@ Tinytest.add('functionality - Add a collection extension that adds initial docum
       this.insert({ a: i });
     }
   };
-  CollectionExtensions.addCollectionExtension(extension);
+  CollectionExtensions.addExtension(extension);
   var testCollection = new Mongo.Collection(null);
   testCollection.find().forEach(function(doc, index) {
     test.equal(doc.a, index);

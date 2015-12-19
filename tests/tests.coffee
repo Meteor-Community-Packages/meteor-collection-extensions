@@ -4,7 +4,7 @@ Tinytest.add 'child class - Can create child classes with wrapped constructor in
   extension = () ->
   	arr.push 1
 
-  Meteor.addCollectionExtension extension
+  CollectionExtensions.addExtension extension
     
   class ChildMongoCollection extends Mongo.Collection
     constructor: ->

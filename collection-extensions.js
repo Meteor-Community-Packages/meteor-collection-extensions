@@ -6,12 +6,12 @@ CollectionExtensions._extensions = [];
 
 // This is where you would add custom functionality to
 // Mongo.Collection/Meteor.Collection
-CollectionExtensions.addCollectionExtension = function(customFunction) {
+CollectionExtensions.addExtension = function(customFunction) {
   if (typeof customFunction !== 'function') {
     throw new Meteor.Error(
       'collection-extension-wrong-argument', 
       'You must pass a function \
-       into Meteor.addCollectionExtension().');
+       into CollectionExtensions.addExtension().');
   }
   CollectionExtensions._extensions.push(customFunction);
   // If Meteor.users exists, apply the extension right away
@@ -22,24 +22,24 @@ CollectionExtensions.addCollectionExtension = function(customFunction) {
 
 // Backwards compatibility
 Meteor.addCollectionExtension = function() {
-  console.warn('`Meteor.addCollectionExtension` is deprecated, please use `CollectionExtensions.addCollectionExtension`');
-  CollectionExtensions.addCollectionExtension.apply(null, arguments);
+  console.warn('`Meteor.addCollectionExtension` is deprecated, please use `CollectionExtensions.addExtension`');
+  CollectionExtensions.addExtension.apply(null, arguments);
 };
 
 // Utility function to add a prototype function to your
 // Meteor/Mongo.Collection object
-CollectionExtensions.addCollectionPrototype = function(name, customFunction) {
+CollectionExtensions.addPrototype = function(name, customFunction) {
   if (typeof name !== 'string') {
     throw new Meteor.Error(
       'collection-extension-wrong-argument', 
       'You must pass a string as the first argument \
-       into Meteor.addCollectionPrototype().');
+       into CollectionExtensions.addPrototype().');
   }
   if (typeof customFunction !== 'function') {
     throw new Meteor.Error(
       'collection-extension-wrong-argument', 
       'You must pass a function as the second argument \
-       into Meteor.addCollectionPrototype().');
+       into CollectionExtensions.addPrototype().');
   }
   (typeof Mongo !== 'undefined' ? 
     Mongo.Collection : 
@@ -47,9 +47,9 @@ CollectionExtensions.addCollectionPrototype = function(name, customFunction) {
 };
 
 // Backwards compatibility
-Meteor.addCollectionExtension = function() {
-  console.warn('`Meteor.addCollectionExtension` is deprecated, please use `CollectionExtensions.addCollectionExtension`');
-  CollectionExtensions.addCollectionExtension.apply(null, arguments);
+Meteor.addCollectionPrototype = function() {
+  console.warn('`Meteor.addCollectionExtension` is deprecated, please use `CollectionExtensions.addPrototype`');
+  CollectionExtensions.addPrototype.apply(null, arguments);
 };
 
 // This is used to reassign the prototype of unfortunately 

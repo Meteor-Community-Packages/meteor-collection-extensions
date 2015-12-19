@@ -21,22 +21,22 @@ I am hoping for all collection-extending package authors to to use this to end t
 
 ## API
 
-#### CollectionExtensions.addCollectionExtension(fn ([name, options]) {})
+#### CollectionExtensions.addExtension(fn ([name, options]) {})
 
 Pass in a function where the arguments are the same as that of when instantiating `Mongo.Collection`. In addition, you may access the collection instance by using `this`. __Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work. Most likely you will only use this when building a custom package.
 
-#### CollectionExtensions.addCollectionPrototype(name, fn (...) {})
+#### CollectionExtensions.addPrototype(name, fn (...) {})
 
 Pass in the name of the prototype function as well as the function. Yes, I know you can simply just do `Mongo.Collection.prototype.myPrototypeFunction = function (...) {}`, which is fine. One of the things that this function does differently is to check whether you're in an older version of Meteor, in which `Mongo.Collection` doesn't exist but rather `Meteor.Collection` does. __Note:__ If you are a package author that adds/modifies prototypes on the `Mongo.Collection`, this is not so critical for you to use unless you really want backwards-compatibility.
 
 ## Usage
 
-The following code recreates [this section of code](https://github.com/dburles/mongo-collection-instances/blob/master/mongo-instances.js#L2-L17) of the `dburles:mongo-collection-instances` using `CollectionExtensions.addCollectionExtension(fn)` thereby eliminating the need to monkey-patch the `Mongo.Collection` constructor:
+The following code recreates [this section of code](https://github.com/dburles/mongo-collection-instances/blob/master/mongo-instances.js#L2-L17) of the `dburles:mongo-collection-instances` using `CollectionExtensions.addExtension(fn)` thereby eliminating the need to monkey-patch the `Mongo.Collection` constructor:
 
 ```js
 var instances = [];
 
-CollectionExtensions.addCollectionExtension(function (name, options) {
+CollectionExtensions.addExtension(function (name, options) {
   instances.push({
     name: name,
     instance: inst,
@@ -45,12 +45,12 @@ CollectionExtensions.addCollectionExtension(function (name, options) {
 });
 ```
 
-The following code recreates the entire [`dburles:collection-helpers`](https://github.com/dburles/meteor-collection-helpers/blob/master/collection-helpers.js) package using `CollectionExtensions.addCollectionPrototype(name, fn)`:
+The following code recreates the entire [`dburles:collection-helpers`](https://github.com/dburles/meteor-collection-helpers/blob/master/collection-helpers.js) package using `CollectionExtensions.addPrototype(name, fn)`:
 
 ```js
 var Document = {};
 
-CollectionExtensions.addCollectionPrototype('helpers', function (helpers) {
+CollectionExtensions.addPrototype('helpers', function (helpers) {
   var self = this;
 
   if (self._transform && ! self._hasCollectionHelpers)
