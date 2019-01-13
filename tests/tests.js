@@ -102,6 +102,12 @@ Tinytest.add("works alongside cfs:standard-packages + cfs:gridfs", function(test
   test.equal(todo.title, 'Pick up more stuff');
 });
 
+Tinytest.add('inheritance - Shows the db-functions as properties of the prototype', function(test) {
+  Todos = new Mongo.Collection('todos' + test.id);
+  console.log(Object.keys(Mongo.Collection.prototype));
+  test.include(Object.keys(Mongo.Collection.prototype), 'update');
+});
+
 Tinytest.add('instanceof - matches Mongo.Collection', function(test) {
   var collectionName = 'foo' + test.id;
   var Test = new Mongo.Collection(collectionName);
