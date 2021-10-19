@@ -1,4 +1,4 @@
-var VERSION_NUMBER = '0.2.1_1';
+var VERSION_NUMBER = '0.3.0';
 
 Package.describe({
   name: 'lai:collection-extensions',
@@ -17,9 +17,9 @@ Package.onTest = Package.onTest || Package.on_test; // backwards-compat
 
 Package.onUse(function (api) {
   api.addFiles = api.addFiles || api.add_files;     // backwards-compat
-  
+
   if (api.versionsFrom) { // 0.9.3+ litmus test
-    api.versionsFrom('0.9.3');
+    api.versionsFrom(['0.9.3', '2.3']);
 
     api.use([
       'mongo',
@@ -37,7 +37,7 @@ Package.onUse(function (api) {
   ]);
 
   api.use(['accounts-base'], ['client', 'server'], { weak: true });
-  
+
   api.addFiles([
     'collection-extensions.js'
   ]);
@@ -52,15 +52,14 @@ Package.onTest(function(api) {
     'tracker',
     'mongo',
     'underscore',
-    'matb33:collection-hooks@0.7.9',
-    'aldeed:collection2@2.3.2',
+    'matb33:collection-hooks@1.1.0',
     'ongoworks:security@1.0.1',
     'cfs:standard-packages@0.5.3',
     'dburles:mongo-collection-instances@0.3.1',
     'lai:document-methods@0.1.4',
-    'cfs:gridfs@0.0.27',
+    'cfs:gridfs@0.0.34',
     'coffeescript',
-    'lai:collection-extensions@' + VERSION_NUMBER
+    'lai:collection-extensions'
   ]);
   api.use('lai:document-methods');
   api.addFiles([
