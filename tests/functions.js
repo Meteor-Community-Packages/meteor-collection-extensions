@@ -1,4 +1,5 @@
-insert = function (collection) {
+/* global CollectionExtensions */
+export const insert = function (collection) {
   collection.insert({
     title: 'Buy groceries',
     createdAt: new Date('1/1/2014'),
@@ -14,17 +15,18 @@ insert = function (collection) {
     },
     tags: ['critical', 'yum'],
     done: false
-  });
+  })
 }
 
-inst = function (collection) {
-  return collection.findOne();
-};
+export const inst = function (collection) {
+  return collection.findOne()
+}
 
-clearExtension = function(extension) {
-  var extensions = CollectionExtensions._extensions;
-  var indexOfExtension = extensions.indexOf(extension);
+export const clearExtension = function (extension) {
+  const extensions = CollectionExtensions._extensions
+  const indexOfExtension = extensions.indexOf(extension)
+
   if (indexOfExtension > -1) {
-    extensions.splice(indexOfExtension, 1);
+    extensions.splice(indexOfExtension, 1)
   }
-};
+}
