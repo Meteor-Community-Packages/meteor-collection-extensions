@@ -1,5 +1,12 @@
 ## Meteor Collection Extensions
 
+[![Meteor Community Package](https://img.shields.io/badge/Meteor-Package-green?logo=meteor&logoColor=white)](https://meteor.com)
+[![Test suite](https://github.com/Meteor-Community-Packages/meteor-collection-extensions/actions/workflows/testsuite.yml/badge.svg)](https://github.com/Meteor-Community-Packages/meteor-collection-extensions/actions/workflows/testsuite.yml)
+[![CodeQL](https://github.com/Meteor-Community-Packages/meteor-collection-extensions/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Meteor-Community-Packages/meteor-collection-extensions/actions/workflows/github-code-scanning/codeql)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+
 This package gives you utility functions to extend your `Mongo.Collection` instances in (hopefully) the safest, 
 easiest and coolest way. If you want to create a package that monkey-patches the `Mongo.Collection` constructor, you'll need this package. I am striving for this package to be a third-party official way of monkey-patching `Mongo.Collection` until, well, Meteor decides to create a core functionality to properly extend it.
 
@@ -34,9 +41,9 @@ Pass in the name of the prototype function as well as the function. Yes, I know 
 The following code recreates [this section of code](https://github.com/dburles/mongo-collection-instances/blob/master/mongo-instances.js#L2-L17) of the `dburles:mongo-collection-instances` using `CollectionExtensions.addExtension(fn)` thereby eliminating the need to monkey-patch the `Mongo.Collection` constructor:
 
 ```js
-var instances = [];
+const instances = [];
 
-CollectionExtensions.addExtension(function (name, options) {
+CollectionExtensions.addExtension((name, options) => {
   instances.push({
     name: name,
     instance: inst,
@@ -48,22 +55,21 @@ CollectionExtensions.addExtension(function (name, options) {
 The following code recreates the entire [`dburles:collection-helpers`](https://github.com/dburles/meteor-collection-helpers/blob/master/collection-helpers.js) package using `CollectionExtensions.addPrototype(name, fn)`:
 
 ```js
-var Document = {};
+const Document = {};
 
-CollectionExtensions.addPrototype('helpers', function (helpers) {
-  var self = this;
+CollectionExtensions.addPrototype('helpers', (helpers) => {
+  const self = this;
 
   if (self._transform && ! self._hasCollectionHelpers)
-    throw new Meteor.Error("Can't apply helpers to '" +
-      self._name + "' a transform function already exists!");
+    throw new Meteor.Error(`Can't apply helpers to '${self._name}', a transform function already exists!`);
 
   if (! self._hasCollectionHelpers) {
-    Document[self._name] = function(doc) { return _.extend(this, doc); };
-    self._transform = function(doc) { return new Document[self._name](doc); };
+    Document[self._name] = doc => Object.assign(this, doc);
+    self._transform = doc => new Document[self._name](doc);
     self._hasCollectionHelpers = true;
   }
   
-  _.each(helpers, function(helper, key) {
+  Object.entries(helper).forEach(([key, helper]) => {
     Document[self._name].prototype[key] = helper;
   });
 });
@@ -93,24 +99,4 @@ Get Travis CI installed.
 
 ## License
 
-The MIT License (MIT)
-
-Copyright (c) 2015 Richard Lai
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+MIT, See [license file](./LICENSE)
