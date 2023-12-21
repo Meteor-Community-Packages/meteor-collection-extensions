@@ -1,5 +1,5 @@
 /* eslint-env meteor */
-const VERSION_NUMBER = '0.3.0'
+const VERSION_NUMBER = '0.4.0'
 
 Package.describe({
   name: 'lai:collection-extensions',
