@@ -75,11 +75,8 @@ function reassignCollectionPrototype (instance, constr) {
 // This code is the same monkey-patching code
 // that matb33:collection-hooks uses, which works pretty nicely
 function wrapCollection (ns, as) {
-  // Save the original prototype
-  if (!as._CollectionPrototype) as._CollectionPrototype = new as.Collection(null)
-
   const constructor = as.Collection
-  const proto = as._CollectionPrototype
+  const proto = ns.Collection.prototype
 
   ns.Collection = function () {
     const ret = constructor.apply(this, arguments)
@@ -109,8 +106,8 @@ function processCollectionExtensions (self, args) {
 }
 
 if (typeof Mongo !== 'undefined') {
-  wrapCollection(Meteor, Mongo)
   wrapCollection(Mongo, Mongo)
+  Meteor.Collection = Mongo.Collection
 } else {
   wrapCollection(Meteor, Meteor)
 }

@@ -119,6 +119,14 @@ describe('tets', function () {
     assert.equal(todo.title, 'Pick up more stuff')
   })
 
+  it('inheritance - Shows the db-functions as properties of the prototype', function () {
+    const Todos = createCollection(randomName('todos'))
+    // Todos = new Mongo.Collection('todos' + test.id);
+    console.log(Object.keys(Mongo.Collection.prototype))
+    assert.instanceOf(Todos, Mongo.Collection)
+    assert.include(Object.keys(Mongo.Collection.prototype), 'update')
+  })
+
   it('instanceof - matches Mongo.Collection', function () {
     const collectionName = randomName('foo')
     const Test = createCollection(collectionName)
