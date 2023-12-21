@@ -1,5 +1,5 @@
 /* eslint-env meteor */
-const VERSION_NUMBER = '1.0.0-rc.0'
+const VERSION_NUMBER = '0.5.0'
 
 Package.describe({
   name: 'lai:collection-extensions',
@@ -20,7 +20,7 @@ Package.onUse(function (api) {
   api.addFiles = api.addFiles || api.add_files // backwards-compat
 
   if (api.versionsFrom) { // 0.9.3+ litmus test
-    api.versionsFrom(['2.8', '3.0.0-alpha.19'])
+    api.versionsFrom(['2.3', '3.0-alpha.19'])
 
     api.use([
       'ecmascript',
