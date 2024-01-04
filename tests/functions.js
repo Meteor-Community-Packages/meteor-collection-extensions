@@ -1,6 +1,6 @@
 /* global CollectionExtensions */
-export const insert = function (collection) {
-  collection.insert({
+export const insert = async function (collection) {
+  return collection.insertAsync({
     title: 'Buy groceries',
     createdAt: new Date('1/1/2014'),
     assignedTo: [{
@@ -18,8 +18,8 @@ export const insert = function (collection) {
   })
 }
 
-export const inst = function (collection) {
-  return collection.findOne()
+export const inst = async function (collection) {
+  return collection.findOneAsync()
 }
 
 export const clearExtension = function (extension) {

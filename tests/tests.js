@@ -6,12 +6,13 @@ import { assert } from 'chai'
 import { Random } from 'meteor/random'
 import { insert, inst, clearExtension } from './functions'
 import SimpleSchema from 'simpl-schema'
+import 'meteor/aldeed:collection2/static';
 
 const randomName = name => `${name}${Random.id(6)}`
 const createCollection = name => new Mongo.Collection(name)
 
 describe('tets', function () {
-  it('works alongside dburles:mongo-collection-instances', function () {
+  it('works alongside dburles:mongo-collection-instances', async function () {
     const name = randomName('todos')
     const Todos = createCollection(name)
     const todosInstance = Mongo.Collection.get(name)
@@ -19,43 +20,45 @@ describe('tets', function () {
     assert.instanceOf(todosInstance, Mongo.Collection)
     assert.instanceOf(todosInstance, Meteor.Collection)
 
-    insert(Todos)
+    await insert(Todos)
 
-    let todo = inst(Todos)
-    todo.$update({
+    let todo = await inst(Todos)
+    await Todos.updateAsync(todo._id, {
       $set: {
         title: 'Pick up more stuff'
       }
     })
 
-    todo = inst(Todos)
+    todo = await inst(Todos)
     assert.equal(todo.title, 'Pick up more stuff')
   })
 
-  it('works alongside ongoworks:security', function () {
-    const name = randomName('todos')
-    const Todos = createCollection(name)
+  // XXX: ongoworks:security is currently out of our reach
+  // XXX: and we should remove comments, once it's part of MCP
+  // it('works alongside ongoworks:security', async function () {
+  //   const name = randomName('todos')
+  //   const Todos = createCollection(name)
+  //
+  //   if (Meteor.isServer) {
+  //     Todos.permit(['insertAsync', 'updateAsync', 'removeAsync']).apply()
+  //
+  //     await insert(Todos)
+  //
+  //     let todo = await inst(Todos)
+  //     await Todos.updateAsync(todo._id, {
+  //       $set: {
+  //         title: 'Pick up more stuff'
+  //       }
+  //     })
+  //
+  //     todo = await inst(Todos)
+  //     assert.equal(todo.title, 'Pick up more stuff')
+  //   } else {
+  //     assert.equal(Todos.permit, undefined)
+  //   }
+  // })
 
-    if (Meteor.isServer) {
-      Todos.permit(['insert', 'update', 'remove']).apply()
-
-      insert(Todos)
-
-      let todo = inst(Todos)
-      todo.$update({
-        $set: {
-          title: 'Pick up more stuff'
-        }
-      })
-
-      todo = inst(Todos)
-      assert.equal(todo.title, 'Pick up more stuff')
-    } else {
-      assert.equal(Todos.permit, undefined)
-    }
-  })
-
-  it('works alongside aldeed:collection2', function () {
+  it('works alongside aldeed:collection2', async function () {
     const Todos = createCollection(randomName('todos'))
 
     Todos.attachSchema(new SimpleSchema({
@@ -64,40 +67,40 @@ describe('tets', function () {
       }
     }))
 
-    insert(Todos)
+    await insert(Todos)
 
-    let todo = inst(Todos)
-    todo.$update({
+    let todo = await inst(Todos)
+    await Todos.updateAsync(todo._id, {
       $set: {
         title: 'Pick up more stuff'
       }
     })
 
-    todo = inst(Todos)
+    todo = await inst(Todos)
     assert.equal(todo.title, 'Pick up more stuff')
   })
 
-  it('works alongside matb33:collection-hooks', function () {
+  it('works alongside matb33:collection-hooks', async function () {
     const Todos = createCollection(randomName('todos'))
 
     Todos.after.update(function () {
       assert.equal(true, true)
     })
 
-    insert(Todos)
+    await insert(Todos)
 
-    let todo = inst(Todos)
-    todo.$update({
+    let todo = await inst(Todos)
+    await Todos.updateAsync(todo._id, {
       $set: {
         title: 'Pick up more stuff'
       }
     })
 
-    todo = inst(Todos)
+    todo = await inst(Todos)
     assert.equal(todo.title, 'Pick up more stuff')
   })
 
-  it('works alongside cfs:standard-packages + cfs:gridfs', function () {
+  it('works alongside cfs:standard-packages + cfs:gridfs', async function () {
     const Todos = createCollection(randomName('todos'))
     const imagesName = randomName('images')
     const createFs = name => new FS.Collection(name, {
@@ -106,25 +109,29 @@ describe('tets', function () {
 
     createFs(imagesName)
 
-    insert(Todos)
+    await insert(Todos)
 
-    let todo = inst(Todos)
-    todo.$update({
+    let todo = await inst(Todos)
+    await Todos.updateAsync(todo._id, {
       $set: {
         title: 'Pick up more stuff'
       }
     })
 
-    todo = inst(Todos)
+    todo = await inst(Todos)
     assert.equal(todo.title, 'Pick up more stuff')
   })
 
   it('inheritance - Shows the db-functions as properties of the prototype', function () {
     const Todos = createCollection(randomName('todos'))
-    // Todos = new Mongo.Collection('todos' + test.id);
-    console.log(Object.keys(Mongo.Collection.prototype))
+    const keys = Object.keys(Mongo.Collection.prototype)
     assert.instanceOf(Todos, Mongo.Collection)
-    assert.include(Object.keys(Mongo.Collection.prototype), 'update')
+    ;[
+      '_makeNewID',
+      '_connection',
+      '_name',
+      '_transform'
+    ].forEach(key => assert.include(keys, key))
   })
 
   it('instanceof - matches Mongo.Collection', function () {
