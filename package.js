@@ -1,5 +1,5 @@
 /* eslint-env meteor */
-const VERSION_NUMBER = '0.5.0'
+const VERSION_NUMBER = '1.0.0'
 
 Package.describe({
   name: 'lai:collection-extensions',
@@ -13,28 +13,14 @@ Package.describe({
   documentation: 'README.md'
 })
 
-Package.onUse = Package.onUse || Package.on_use // backwards-compat
-Package.onTest = Package.onTest || Package.on_test // backwards-compat
-
 Package.onUse(function (api) {
   api.addFiles = api.addFiles || api.add_files // backwards-compat
-
-  if (api.versionsFrom) { // 0.9.3+ litmus test
-    api.versionsFrom(['2.3', '3.0-alpha.19'])
-
-    api.use([
-      'ecmascript',
-      'mongo',
-      'tracker'
-    ])
-  } else {
-    api.use([
-      'mongo-livedata',
-      'deps'
-    ])
-  }
+  api.versionsFrom(['2.3', '3.0-beta.0'])
 
   api.use([
+    'ecmascript',
+    'mongo@2.0.0-beta300.0',
+    'tracker',
     'minimongo'
   ])
 
@@ -48,6 +34,7 @@ Package.onUse(function (api) {
 })
 
 Package.onTest(function (api) {
+  api.use('aldeed:collection2@4.0.0-beta.6')
   api.use([
     'ecmascript',
     'accounts-base',
@@ -56,16 +43,13 @@ Package.onTest(function (api) {
     'mongo',
     'underscore',
     'matb33:collection-hooks@1.1.0',
-    'aldeed:collection2@3.0.0',
-    'ongoworks:security@1.0.1',
-    'cfs:standard-packages@0.5.3',
-    'dburles:mongo-collection-instances@0.3.5',
-    'lai:document-methods@0.1.4',
-    'cfs:gridfs@0.0.34',
+    //'ongoworks:security@1.0.1',
+    'cfs:standard-packages',
+    'dburles:mongo-collection-instances@1.0.0',
+    'cfs:gridfs',
     'coffeescript',
-    'lai:collection-extensions'
+    'lai:collection-extensions@1.0.0'
   ])
-  api.use('lai:document-methods')
   api.addFiles([
     'tests/functions.js',
     'tests/tests.js',
