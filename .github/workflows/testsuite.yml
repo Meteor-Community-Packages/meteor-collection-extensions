@@ -59,7 +59,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-20-
 
-      - run: |
+      - name: run tests
+        run: |
         cd test-proxy 
         npm ci 
         npm run setup 
