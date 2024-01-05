@@ -17,15 +17,15 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
 
       - name: cache dependencies
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-16-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-20-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-16-
+            ${{ runner.os }}-node-20-
 
       - run: cd test-proxy && npm ci && npm run setup && npm run lint
 
@@ -36,10 +36,7 @@ jobs:
     strategy:
       matrix:
         meteorRelease:
-          - '2.3'
-          - '2.8.0'
-          - '2.14'
-          # Latest version
+          - '3.0-beta.0'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -47,7 +44,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
 
       - name: Setup meteor ${{ matrix.meteorRelease }}
         uses: meteorengineer/setup-meteor@v1
@@ -58,8 +55,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-16-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-20-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-16-
+            ${{ runner.os }}-node-20-
 
-      - run: cd test-proxy && npm ci && npm run setup && npm run test
+      - run: |
+        cd test-proxy 
+        npm ci 
+        npm run setup 
+        npm run test
