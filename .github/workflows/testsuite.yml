@@ -61,7 +61,7 @@ jobs:
 
       - name: run tests
         run: |
-        cd test-proxy 
-        npm ci 
-        npm run setup 
-        npm run test
+          cd test-proxy 
+          npm ci 
+          npm run setup 
+          npm run test
