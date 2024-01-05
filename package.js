@@ -44,7 +44,7 @@ Package.onTest(function (api) {
     'matb33:collection-hooks@1.1.0',
     // 'ongoworks:security@1.0.1',
     'cfs:standard-packages',
-    'dburles:mongo-collection-instances@1.0.0',
+    'dburles:mongo-collection-instances@1.0.0-beta300.0',
     'cfs:gridfs',
     'coffeescript',
     'lai:collection-extensions@1.0.0-beta300.0'
