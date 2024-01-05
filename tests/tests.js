@@ -6,7 +6,7 @@ import { assert } from 'chai'
 import { Random } from 'meteor/random'
 import { insert, inst, clearExtension } from './functions'
 import SimpleSchema from 'simpl-schema'
-import 'meteor/aldeed:collection2/static';
+import 'meteor/aldeed:collection2/static'
 
 const randomName = name => `${name}${Random.id(6)}`
 const createCollection = name => new Mongo.Collection(name)

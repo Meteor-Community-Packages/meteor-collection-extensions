@@ -1,9 +1,8 @@
 /* eslint-env meteor */
-const VERSION_NUMBER = '1.0.0'
 
 Package.describe({
   name: 'lai:collection-extensions',
-  version: VERSION_NUMBER,
+  version: '1.0.0-beta300.0',
   // Brief, one-line summary of the package.
   summary: 'Safely and easily extend the Mongo.Collection constructor with custom functionality.',
   // URL to the Git repository containing the source code for this package.
@@ -18,7 +17,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['2.3', '3.0-beta.0'])
 
   api.use([
-    'ecmascript',
+    'ecmascript@0.16.8-beta300.0',
     'mongo@2.0.0-beta300.0',
     'tracker',
     'minimongo'
@@ -34,21 +33,21 @@ Package.onUse(function (api) {
 })
 
 Package.onTest(function (api) {
-  api.use('aldeed:collection2@4.0.0-beta.6')
+  api.use('aldeed:collection2')
   api.use([
     'ecmascript',
     'accounts-base',
-    'meteortesting:mocha',
+    'meteortesting:mocha@3.0.0-beta300.0',
     'tracker',
     'mongo',
     'underscore',
     'matb33:collection-hooks@1.1.0',
-    //'ongoworks:security@1.0.1',
+    // 'ongoworks:security@1.0.1',
     'cfs:standard-packages',
     'dburles:mongo-collection-instances@1.0.0',
     'cfs:gridfs',
     'coffeescript',
-    'lai:collection-extensions@1.0.0'
+    'lai:collection-extensions@1.0.0-beta300.0'
   ])
   api.addFiles([
     'tests/functions.js',
