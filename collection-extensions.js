@@ -1,9 +1,8 @@
-/* global CollectionExtensions */
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo'
 
 // The collection extensions namespace
-CollectionExtensions = {} // eslint-disable-line no-global-assign
+export const CollectionExtensions = {} // eslint-disable-line no-global-assign
 
 // Stores all the collection extensions
 CollectionExtensions._extensions = []
@@ -19,14 +18,9 @@ CollectionExtensions.addExtension = function (customFunction) {
   CollectionExtensions._extensions.push(customFunction)
   // If Meteor.users exists, apply the extension right away
   if (typeof Meteor.users !== 'undefined') {
-    customFunction.apply(Meteor.users, ['users'])
+    applyExtension(Meteor.users, customFunction, 'users')
+      .catch(e => console.error(e))
   }
-}
-
-// Backwards compatibility
-Meteor.addCollectionExtension = function () {
-  console.warn('`Meteor.addCollectionExtension` is deprecated, please use `CollectionExtensions.addExtension`')
-  CollectionExtensions.addExtension.apply(null, arguments)
 }
 
 // Utility function to add a prototype function to your
@@ -45,12 +39,6 @@ CollectionExtensions.addPrototype = function (name, customFunction) {
   (typeof Mongo !== 'undefined'
     ? Mongo.Collection
     : Meteor.Collection).prototype[name] = customFunction
-}
-
-// Backwards compatibility
-Meteor.addCollectionPrototype = function () {
-  console.warn('`Meteor.addCollectionPrototype` is deprecated, please use `CollectionExtensions.addPrototype`')
-  CollectionExtensions.addPrototype.apply(null, arguments)
 }
 
 // This is used to reassign the prototype of unfortunately
@@ -78,10 +66,28 @@ function wrapCollection (ns, as) {
   const constructor = as.Collection
   const proto = ns.Collection.prototype
 
-  ns.Collection = function () {
-    const ret = constructor.apply(this, arguments)
+  ns.Collection = function (...args) {
+    const collection = this
+    const extensions = {
+      onError: e => console.error(e),
+      onComplete: () => {}
+    }
+
+    const extIndex = args.findIndex(entry => entry && typeof entry === 'object' && hasProp(entry, 'extensions'))
+    if (extIndex > -1) {
+      const options = args[extIndex]
+      extensions.onError = options.extensions.onError ?? extensions.onError
+      extensions.onComplete = options.extensions.onComplete ?? extensions.onComplete
+      delete options.extensions
+    }
+
+    const ret = constructor.apply(collection, args)
     // This is where all the collection extensions get processed
-    processCollectionExtensions(this, arguments)
+    // We can only catch the Promise, since there is no async constructor
+    // so we can't await here
+    processCollectionExtensions(collection, args)
+      .then(() => extensions.onComplete(collection))
+      .catch(e => extensions.onError(e, collection))
     return ret
   }
 
@@ -89,20 +95,29 @@ function wrapCollection (ns, as) {
   ns.Collection.prototype.constructor = ns.Collection
 
   for (const prop in constructor) {
-    if (Object.prototype.hasOwnProperty.call(constructor, prop)) {
+    if (hasProp(constructor, prop)) {
       ns.Collection[prop] = constructor[prop]
     }
   }
 }
 
-function processCollectionExtensions (self, args) {
-  // Using old-school operations for better performance
-  // Please don't judge me ;P
-  const applyArgs = args ? [].slice.call(args, 0) : undefined
-  const extensions = CollectionExtensions._extensions
-  for (let i = 0, len = extensions.length; i < len; i++) {
-    extensions[i].apply(self, applyArgs)
+const hasProp = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+
+/**
+ * Applies every registered extension to the given collection.
+ * @param collection
+ * @param args
+ * @returns {Promise<void>}
+ */
+async function processCollectionExtensions (collection, args = []) {
+  for (const ext of CollectionExtensions._extensions) {
+    await applyExtension(collection, ext, args)
   }
+}
+
+async function applyExtension (collection, fn, args = []) {
+  // eslint-disable-next-line no-useless-call
+  await fn.call(null, collection, ...args)
 }
 
 if (typeof Mongo !== 'undefined') {

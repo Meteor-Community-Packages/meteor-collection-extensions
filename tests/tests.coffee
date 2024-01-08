@@ -1,3 +1,4 @@
+{ CollectionExtensions } = require('meteor/lai:collection-extensions')
 { assert } = require 'chai'
 { clearExtension } = require './functions'
 
