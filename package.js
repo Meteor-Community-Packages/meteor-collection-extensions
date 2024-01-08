@@ -14,14 +14,14 @@ Package.describe({
 
 Package.onUse(function (api) {
   api.addFiles = api.addFiles || api.add_files // backwards-compat
-  api.versionsFrom(['2.3', '3.0-beta.0'])
+  api.versionsFrom(['3.0-beta.0'])
 
   api.use([
     'ecmascript@0.16.8-beta300.0',
     'mongo@2.0.0-beta300.0'
   ])
 
-  api.use(['accounts-base'], ['client', 'server'], { weak: true })
+  api.use(['accounts-base@3.0.0-beta300.0'], ['client', 'server'], { weak: true })
 
   api.mainModule('collection-extensions.js')
 })
@@ -32,7 +32,7 @@ Package.onTest(function (api) {
     'coffeescript',
     'aldeed:simple-schema@1.13.1',
     'aldeed:collection2@4.0.0-beta.7',
-    'accounts-base',
+    'accounts-base@3.0.0-beta300.0',
     'meteortesting:mocha@3.1.0-beta300.0',
     'tracker',
     'mongo',
@@ -41,7 +41,7 @@ Package.onTest(function (api) {
     // 'ongoworks:security@1.0.1',
     // 'cfs:standard-packages',
     // 'cfs:gridfs',
-    'dburles:mongo-collection-instances@0.4.0 || 1.0.0-beta300.0',
+    'dburles:mongo-collection-instances@1.0.0-beta300.0',
     'lai:collection-extensions@1.0.0-beta300.0'
   ])
   api.addFiles([
