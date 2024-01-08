@@ -13,6 +13,8 @@ This changelog has started with development of Version 1.0
 - Extensions are not bound via `.apply`, since this would not
   work with arrow functions, the new extension format is passing the 
   collection as first argument!
+- addPrototype uses `Object.defineProperty`, allows for 
+  [property descriptors](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 
 ### Tests
 - dropped `ongoworks:security` from tests

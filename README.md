@@ -14,11 +14,13 @@ well, Meteor decides to create a core functionality to properly extend it.
 
 ## Breaking changes in 1.0.0, please keep reading!
 
-> Starting with v. 1.0.0, this package requires Meteor >= 3.0!
-
-All extensions will have to use `collection` as first param, instead of `this`:
+- Starting with v. 1.0.0, this package requires Meteor >= 3.0!
+- The module needs to be imported **explicitly**, it's not a global anymore!
+- All extensions will have to use `collection` as first param, instead of `this`:
 
 ```js
+import { CollectionExtensions } from './collection-extensions'
+
 CollectionExtensions.addExtension(async (collection, name, options) => {
   // ... your extension code
 })
@@ -44,7 +46,12 @@ const MyDocs = new Mongo.Collection('myDocs', { extensions })
 This is unfortunate, but a tradeoff between determinism and
 compatibility.
 
-### Background
+- `addProperty` now uses `Object.definedProperty` under the hood
+  and allows to pass in property descriptors as third argument, while
+  the function is always required
+
+### Background info
+
 With the changes of Meteor 3.0 moving to full async,
 we now have to resolve the Promises, returned by
 Mongo.Collection methods (`insertAsync` etc.).
@@ -83,6 +90,8 @@ Pass in the name of the prototype function as well as the function. Yes, I know 
 The following code recreates [this section of code](https://github.com/dburles/mongo-collection-instances/blob/master/mongo-instances.js#L2-L17) of the `dburles:mongo-collection-instances` using `CollectionExtensions.addExtension(fn)` thereby eliminating the need to monkey-patch the `Mongo.Collection` constructor:
 
 ```js
+import {CollectionExtensions } from 'meteor/lai:collection-extensions'
+
 const instances = [];
 
 CollectionExtensions.addExtension((collection, name, options) => {
@@ -94,27 +103,14 @@ CollectionExtensions.addExtension((collection, name, options) => {
 });
 ```
 
-The following code recreates the entire [`dburles:collection-helpers`](https://github.com/dburles/meteor-collection-helpers/blob/master/collection-helpers.js) package using `CollectionExtensions.addPrototype(name, fn)`:
+The following code overrides `ìnsert` to use `insertAsync` under the hood.
 
 ```js
-const Document = {};
+import {CollectionExtensions } from 'meteor/lai:collection-extensions'
 
-CollectionExtensions.addPrototype('helpers', (helpers) => {
-  const self = this;
-
-  if (self._transform && ! self._hasCollectionHelpers)
-    throw new Meteor.Error(`Can't apply helpers to '${self._name}', a transform function already exists!`);
-
-  if (! self._hasCollectionHelpers) {
-    Document[self._name] = doc => Object.assign(this, doc);
-    self._transform = doc => new Document[self._name](doc);
-    self._hasCollectionHelpers = true;
-  }
-  
-  Object.entries(helper).forEach(([key, helper]) => {
-    Document[self._name].prototype[key] = helper;
-  });
-});
+CollectionExtensions.addPrototype('insert', async function (doc) {
+  return this.insertAsync(doc)
+})
 ```
 
 ## Todo
