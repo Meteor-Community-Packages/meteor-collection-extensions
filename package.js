@@ -31,7 +31,7 @@ Package.onTest(function (api) {
     'ecmascript',
     'coffeescript',
     'aldeed:simple-schema@1.13.1',
-    'aldeed:collection2@4.0.0-beta.6',
+    'aldeed:collection2@4.0.0-beta.7',
     'accounts-base',
     'meteortesting:mocha@3.1.0-beta300.0',
     'tracker',
