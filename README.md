@@ -14,8 +14,9 @@ well, Meteor decides to create a core functionality to properly extend it.
 
 ## Breaking changes in 1.0.0, please keep reading!
 
-Starting with v. 1.0.0, extensions will have to use 
-`collection` as first param, instead of `this`:
+> Starting with v. 1.0.0, this package requires Meteor >= 3.0!
+
+All extensions will have to use `collection` as first param, instead of `this`:
 
 ```js
 CollectionExtensions.addExtension(async (collection, name, options) => {
