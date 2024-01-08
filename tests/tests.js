@@ -275,7 +275,8 @@ describe('CollectionExtensions', function () {
     })
 
     it('supports a callback that execs when extensions have completed', done => {
-      extension = () => {}
+      extension = () => {
+      }
       CollectionExtensions.addExtension(extension)
       const name = randomName('onComplete')
       const extensions = {
@@ -306,6 +307,32 @@ describe('CollectionExtensions', function () {
   })
 
   describe('addPrototype', function () {
-    it('allows to register a prototype function')
+    it('allows to register a prototype function', async () => {
+      CollectionExtensions.addPrototype('count', async function () {
+        return this.find().countAsync()
+      })
+      const name = randomName('proto')
+      const collection = createCollection(name)
+      assert.equal(await collection.count(), 0)
+
+      // expect not being enumerable by default
+      assert.isFalse(Object.keys(collection).includes('count'))
+    })
+    it('allows to override proto functions', async () => {
+      CollectionExtensions.addPrototype('insert', async function (doc) {
+        return this.insertAsync(doc)
+      })
+      const name = randomName('proto')
+      const collection = createCollection(name)
+      assert.equal(await collection.count(), 0)
+
+      if (Meteor.isServer) {
+        const promise = collection.insert({ foo: 1 })
+        assert.isTrue(typeof promise.then === 'function')
+        await promise
+
+        assert.equal(await collection.count(), 1)
+      }
+    })
   })
 })
