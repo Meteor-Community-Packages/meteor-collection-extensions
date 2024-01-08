@@ -8,9 +8,46 @@
 
 
 This package gives you utility functions to extend your `Mongo.Collection` instances in (hopefully) the safest, 
-easiest and coolest way. If you want to create a package that monkey-patches the `Mongo.Collection` constructor, you'll need this package. I am striving for this package to be a third-party official way of monkey-patching `Mongo.Collection` until, well, Meteor decides to create a core functionality to properly extend it.
+easiest and coolest way.
+If you want to create a package that monkey-patches the `Mongo.Collection` constructor, you'll need this package. I am striving for this package to be a third-party official way of monkey-patching `Mongo.Collection` until, 
+well, Meteor decides to create a core functionality to properly extend it.
 
-If you'd like to contribute check out the [Hackpad](https://hackpad.com/rdqGCTPoZ8F) discussion.
+## Breaking changes in 1.0.0, please keep reading!
+
+Starting with v. 1.0.0, extensions will have to use 
+`collection` as first param, instead of `this`:
+
+```js
+CollectionExtensions.addExtension(async (collection, name, options) => {
+  // ... your extension code
+})
+```
+
+> This implies extensions have to be updated accordingly
+
+Furthermore, **extensions may not be applied immediately**.
+This is, since extensions are applied during the call of the `Mongo.Collection`
+constructor. However, constructors [cannot be async](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor#syntax).
+We can't therefore be sure, when (async) extensions have been applied, without using a callback:
+
+```js
+const extensions = {
+  onComplete: () => {},
+  onError: e => console.error(e)
+}
+// exentsions options will not be passed to
+// the original collection constructor!
+const MyDocs = new Mongo.Collection('myDocs', { extensions })
+```
+
+This is unfortunate, but a tradeoff between determinism and
+compatibility.
+
+### Background
+With the changes of Meteor 3.0 moving to full async,
+we now have to resolve the Promises, returned by
+Mongo.Collection methods (`insertAsync` etc.).
+
 
 ## Installation
 
@@ -24,29 +61,33 @@ Meteor gives you no easy way to extend the `Mongo.Collection` object, and theref
 package publishers who want to extend its functionality resort 
 to monkey-patching the `Mongo.Collection` constructor, and sometimes it's not done right. This package seeks to centralize one well-done monkey-patch with the ability to hook into the constructor as many times as possible. See my code.
 
-I am hoping for all collection-extending package authors to to use this to end the package compatibility issues. In order for this to happen, I will fork major packages like `matb33:collection-hooks`, `sewdn:collection-behaviours` and refactor the code to use this utility package, and run their test suites. If you want to help, that would be awesome.
+I am hoping for all collection-extending package authors to to use this to end the package compatibility issues. In order for this to happen, I will fork major packages like `matb33:collection-hooks`, `sewdn:collection-behaviours` and refactor the code to use this utility package, and run their test suites.
+If you want to help, that would be awesome.
 
 ## API
 
-#### CollectionExtensions.addExtension(fn ([name, options]) {})
+#### CollectionExtensions.addExtension(async fn ([collection, name, options]) {})
 
-Pass in a function where the arguments are the same as that of when instantiating `Mongo.Collection`. In addition, you may access the collection instance by using `this`. __Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work. Most likely you will only use this when building a custom package.
+Pass in a (async or standard) function where the arguments are the same as that of when instantiating `Mongo.Collection`. 
+In addition, you may access the collection instance by using `this`.
+
+__Very Important:__ You need to make sure your extensions are added before you instantiate your `Mongo.Collection`s or your extensions will not work. Most likely you will only use this when building a custom package.
 
 #### CollectionExtensions.addPrototype(name, fn (...) {})
 
 Pass in the name of the prototype function as well as the function. Yes, I know you can simply just do `Mongo.Collection.prototype.myPrototypeFunction = function (...) {}`, which is fine. One of the things that this function does differently is to check whether you're in an older version of Meteor, in which `Mongo.Collection` doesn't exist but rather `Meteor.Collection` does. __Note:__ If you are a package author that adds/modifies prototypes on the `Mongo.Collection`, this is not so critical for you to use unless you really want backwards-compatibility.
 
-## Usage
+## Examples
 
 The following code recreates [this section of code](https://github.com/dburles/mongo-collection-instances/blob/master/mongo-instances.js#L2-L17) of the `dburles:mongo-collection-instances` using `CollectionExtensions.addExtension(fn)` thereby eliminating the need to monkey-patch the `Mongo.Collection` constructor:
 
 ```js
 const instances = [];
 
-CollectionExtensions.addExtension((name, options) => {
+CollectionExtensions.addExtension((collection, name, options) => {
   instances.push({
     name: name,
-    instance: inst,
+    instance: collection,
     options: options
   });
 });
