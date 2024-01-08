@@ -18,7 +18,7 @@ CollectionExtensions.addExtension = function (customFunction) {
   CollectionExtensions._extensions.push(customFunction)
   // If Meteor.users exists, apply the extension right away
   if (typeof Meteor.users !== 'undefined') {
-    applyExtension(Meteor.users, customFunction, 'users')
+    applyExtension(Meteor.users, customFunction, ['users'])
       .catch(e => console.error(e))
   }
 }
@@ -115,6 +115,13 @@ async function processCollectionExtensions (collection, args = []) {
   }
 }
 
+/**
+ * Applies a single extension to a collection
+ * @param collection
+ * @param fn
+ * @param args
+ * @returns {Promise<void>}
+ */
 async function applyExtension (collection, fn, args = []) {
   // eslint-disable-next-line no-useless-call
   await fn.call(null, collection, ...args)
