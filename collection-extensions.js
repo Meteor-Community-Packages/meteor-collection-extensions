@@ -25,7 +25,7 @@ CollectionExtensions.addExtension = function (customFunction) {
 
 // Utility function to add a prototype function to your
 // Meteor/Mongo.Collection object
-CollectionExtensions.addPrototype = function (name, customFunction) {
+CollectionExtensions.addPrototype = function (name, customFunction, options = {}) {
   if (typeof name !== 'string') {
     throw new Meteor.Error(
       'collection-extension-wrong-argument',
@@ -36,9 +36,18 @@ CollectionExtensions.addPrototype = function (name, customFunction) {
       'collection-extension-wrong-argument',
       'You must pass a function as the second argument into CollectionExtensions.addPrototype().')
   }
-  (typeof Mongo !== 'undefined'
-    ? Mongo.Collection
-    : Meteor.Collection).prototype[name] = customFunction
+
+  const target =
+    typeof Mongo !== 'undefined'
+      ? Mongo.Collection
+      : Meteor.Collection
+  const descriptor = {
+    value: customFunction,
+    configurable: !!options.configurable,
+    enumerable: !!options.enumerable,
+    writable: !!options.writable
+  }
+  Object.defineProperty(target.prototype, name, descriptor)
 }
 
 // This is used to reassign the prototype of unfortunately
