@@ -1,9 +1,8 @@
 /* eslint-env meteor */
-const VERSION_NUMBER = '0.4.0'
 
 Package.describe({
   name: 'lai:collection-extensions',
-  version: VERSION_NUMBER,
+  version: '1.0.0-beta300.1',
   // Brief, one-line summary of the package.
   summary: 'Safely and easily extend the Mongo.Collection constructor with custom functionality.',
   // URL to the Git repository containing the source code for this package.
@@ -13,59 +12,38 @@ Package.describe({
   documentation: 'README.md'
 })
 
-Package.onUse = Package.onUse || Package.on_use // backwards-compat
-Package.onTest = Package.onTest || Package.on_test // backwards-compat
-
 Package.onUse(function (api) {
   api.addFiles = api.addFiles || api.add_files // backwards-compat
-
-  if (api.versionsFrom) { // 0.9.3+ litmus test
-    api.versionsFrom(['0.9.3', '2.3'])
-
-    api.use([
-      'ecmascript',
-      'mongo',
-      'tracker'
-    ])
-  } else {
-    api.use([
-      'mongo-livedata',
-      'deps'
-    ])
-  }
+  api.versionsFrom(['2.8.0', '3.0-beta.0'])
 
   api.use([
-    'minimongo'
+    'ecmascript@0.16.8 || 0.16.8-beta300.0',
+    'mongo@1.16.8 || 2.0.0-beta300.0'
   ])
 
-  api.use(['accounts-base'], ['client', 'server'], { weak: true })
+  api.use(['accounts-base@2.0.0 || 3.0.0-beta300.0'], ['client', 'server'], { weak: true })
 
-  api.addFiles([
-    'collection-extensions.js'
-  ])
-
-  api.export('CollectionExtensions')
+  api.mainModule('collection-extensions.js')
 })
 
 Package.onTest(function (api) {
   api.use([
     'ecmascript',
-    'accounts-base',
-    'meteortesting:mocha',
+    'coffeescript',
+    'aldeed:simple-schema@1.13.1',
+    'aldeed:collection2@3.0.0 || 4.0.0-beta.7',
+    'accounts-base@2.0.0 || 3.0.0-beta300.0',
+    'meteortesting:mocha@2.0.0 || 3.1.0-beta300.0',
     'tracker',
     'mongo',
     'underscore',
-    'matb33:collection-hooks@1.1.0',
-    'aldeed:collection2@3.0.0',
-    'ongoworks:security@1.0.1',
-    'cfs:standard-packages@0.5.3',
-    'dburles:mongo-collection-instances@0.3.5',
-    'lai:document-methods@0.1.4',
-    'cfs:gridfs@0.0.34',
-    'coffeescript',
-    'lai:collection-extensions'
+    // 'matb33:collection-hooks@1.4.0-beta300.0',
+    // 'ongoworks:security@1.0.1',
+    // 'cfs:standard-packages',
+    // 'cfs:gridfs',
+    'dburles:mongo-collection-instances@1.0.0-beta300.1',
+    'lai:collection-extensions@1.0.0-beta300.1'
   ])
-  api.use('lai:document-methods')
   api.addFiles([
     'tests/functions.js',
     'tests/tests.js',
