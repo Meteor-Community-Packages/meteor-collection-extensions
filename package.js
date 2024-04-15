@@ -2,7 +2,7 @@
 
 Package.describe({
   name: 'lai:collection-extensions',
-  version: '1.0.0-beta300.1',
+  version: '1.0.0-beta300.2',
   // Brief, one-line summary of the package.
   summary: 'Safely and easily extend the Mongo.Collection constructor with custom functionality.',
   // URL to the Git repository containing the source code for this package.
@@ -17,11 +17,11 @@ Package.onUse(function (api) {
   api.versionsFrom(['2.8.0', '3.0-beta.0'])
 
   api.use([
-    'ecmascript@0.16.8 || 0.16.8-beta300.0',
-    'mongo@1.16.8 || 2.0.0-beta300.0'
+    'ecmascript',
+    'mongo'
   ])
 
-  api.use(['accounts-base@2.0.0 || 3.0.0-beta300.0'], ['client', 'server'], { weak: true })
+  api.use(['accounts-base'], ['client', 'server'], { weak: true })
 
   api.mainModule('collection-extensions.js')
 })
@@ -30,19 +30,20 @@ Package.onTest(function (api) {
   api.use([
     'ecmascript',
     'coffeescript',
-    'aldeed:simple-schema@1.13.1',
-    'aldeed:collection2@3.0.0 || 4.0.0-beta.7',
-    'accounts-base@2.0.0 || 3.0.0-beta300.0',
-    'meteortesting:mocha@2.0.0 || 3.1.0-beta300.0',
+    'accounts-base',
     'tracker',
     'mongo',
     'underscore',
+    'aldeed:collection2@3.0.0 || 4.0.0',
+    'aldeed:simple-schema@2.0.0-beta300.0 || 1.13.1',
+    'meteortesting:mocha@2.0.0 || 3.1.0-beta300.0',
+    'meteortesting:browser-tests@1.5.3 || 1.6.0-beta300.0',
     // 'matb33:collection-hooks@1.4.0-beta300.0',
     // 'ongoworks:security@1.0.1',
     // 'cfs:standard-packages',
     // 'cfs:gridfs',
     'dburles:mongo-collection-instances@1.0.0-beta300.1',
-    'lai:collection-extensions@1.0.0-beta300.1'
+    'lai:collection-extensions@1.0.0-beta300.2'
   ])
   api.addFiles([
     'tests/functions.js',

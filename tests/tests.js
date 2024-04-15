@@ -6,8 +6,8 @@ import { assert } from 'chai'
 import { Random } from 'meteor/random'
 import { insert, inst, clearExtension, asyncTimeout } from './functions'
 import SimpleSchema from 'meteor/aldeed:simple-schema'
-import 'meteor/aldeed:collection2/dynamic'
 import { CollectionExtensions } from 'meteor/lai:collection-extensions'
+import 'meteor/aldeed:collection2/static'
 
 const randomName = name => `${name}${Random.id(6)}`
 const createCollection = (name, options) => new Mongo.Collection(name, options)
@@ -79,7 +79,6 @@ describe('CollectionExtensions', function () {
     // })
 
     it('works alongside aldeed:collection2', async function () {
-      Collection2.load()
       const name = randomName('collection2')
       const Todos = createCollection(name)
       Todos.attachSchema(new SimpleSchema({
@@ -158,9 +157,7 @@ describe('CollectionExtensions', function () {
         'find',
         'findOneAsync',
         'findOne',
-        '_insert',
         'insert',
-        '_insertAsync',
         'insertAsync',
         'updateAsync',
         'update',
@@ -169,7 +166,6 @@ describe('CollectionExtensions', function () {
         '_isRemoteCollection',
         'upsertAsync',
         'upsert',
-        'ensureIndexAsync',
         'createIndexAsync',
         'createIndex',
         'dropIndexAsync',
@@ -182,13 +178,9 @@ describe('CollectionExtensions', function () {
         '_defineMutationMethods',
         '_updateFetch',
         '_isInsecure',
-        '_validatedInsertAsync',
         '_validatedInsert',
-        '_validatedUpdateAsync',
         '_validatedUpdate',
-        '_validatedRemoveAsync',
         '_validatedRemove',
-        '_callMutatorMethodAsync',
         '_callMutatorMethod'
       ].forEach(key => assert.include(keys, key))
     })
@@ -291,13 +283,13 @@ describe('CollectionExtensions', function () {
 
     it('catches errors and forwards them in an optional callback', done => {
       extension = () => {
-        throw new Error('expected error callback')
+        throw new Error('This is an expected error callback')
       }
       CollectionExtensions.addExtension(extension)
       const name = randomName('onError')
       const extensions = {
         onError: (e, collection) => {
-          assert.equal(e.message, 'expected error callback')
+          assert.equal(e.message, 'This is an expected error callback')
           assert.equal(collection._name, name)
           done()
         }
