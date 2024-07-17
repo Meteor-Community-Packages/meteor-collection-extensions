@@ -10,16 +10,16 @@
     "test:watch": "METEOR_PACKAGE_DIRS='../:../../:../../meteor-collection2/package' TEST_BROWSER_DRIVER=puppeteer TEST_WATCH=1 meteor test-packages --raw-logs --driver-package meteortesting:mocha ../"
   },
   "dependencies": {
-    "@babel/runtime": "^7.23.6",
-    "meteor-node-stubs": "^1.2.7",
+    "@babel/runtime": "^7.24.8",
+    "meteor-node-stubs": "^1.2.9",
     "simpl-schema": "^1.13.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.6",
-    "@babel/eslint-parser": "^7.23.3",
-    "chai": "^4.3.10",
+    "@babel/core": "^7.24.9",
+    "@babel/eslint-parser": "^7.24.8",
+    "chai": "^4.4.1",
     "eslint-config-standard": "^16.0.3",
-    "puppeteer": "^18.2.1",
+    "puppeteer": "^22.13.0",
     "snazzy": "^9.0.0",
     "standardx": "^7.0.0"
   },
