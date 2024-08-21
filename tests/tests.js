@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-/* global Collection2 */
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo'
 import { assert } from 'chai'
