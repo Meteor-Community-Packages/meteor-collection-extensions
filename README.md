@@ -6,6 +6,7 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+> Harry Adel has [integrated](https://github.com/meteor/meteor/pull/13830) this package into MeteorJS core starting with version 3.4. We recommend that you switch to the now official approach.
 
 This package gives you utility functions to extend your `Mongo.Collection` instances in (hopefully) the safest, 
 easiest and coolest way.
@@ -138,3 +139,4 @@ Get Travis CI installed.
 ## License
 
 MIT, See [license file](./LICENSE)
+
