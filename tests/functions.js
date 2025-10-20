@@ -1,6 +1,7 @@
-/* global CollectionExtensions */
-export const insert = function (collection) {
-  collection.insert({
+import { CollectionExtensions } from 'meteor/lai:collection-extensions'
+
+export const insert = async function (collection) {
+  const doc = {
     title: 'Buy groceries',
     createdAt: new Date('1/1/2014'),
     assignedTo: [{
@@ -15,11 +16,13 @@ export const insert = function (collection) {
     },
     tags: ['critical', 'yum'],
     done: false
-  })
+  }
+
+  return collection.insertAsync(doc)
 }
 
-export const inst = function (collection) {
-  return collection.findOne()
+export const inst = async function (collection) {
+  return collection.findOneAsync()
 }
 
 export const clearExtension = function (extension) {
@@ -30,3 +33,7 @@ export const clearExtension = function (extension) {
     extensions.splice(indexOfExtension, 1)
   }
 }
+
+export const asyncTimeout = (ms) => new Promise((resolve) => {
+  setTimeout(() => resolve(), ms)
+})
